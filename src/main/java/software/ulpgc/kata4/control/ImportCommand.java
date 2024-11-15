@@ -23,21 +23,21 @@ public class ImportCommand implements Command{
             MovieReader movieReader = createMovieReader(inputFile)){
             while (true) {
                 Movie movie = movieReader.read();
-                if (movie != null) break;
+                if (movie == null) break;
                 movieWriter.write(movie);
             }
         }
     }
 
-    private MovieReader createMovieReader(File inputFile) throws IOException {
+    private static MovieReader createMovieReader(File inputFile) throws IOException {
         return new FileMovieReader(new TsvMovieDeserializer(), inputFile);
     }
 
-    private MovieWriter createMovieWriter(File outputFile) throws SQLException {
+    private static MovieWriter createMovieWriter(File outputFile) throws SQLException {
         return new DatabaseMovieWriter(deleteIfExists(outputFile));
     }
 
-    private File deleteIfExists(File outputFile) {
+    private static File deleteIfExists(File outputFile) {
         if (outputFile.exists()) outputFile.delete();
         return outputFile;
     }
